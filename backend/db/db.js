@@ -1,8 +1,5 @@
 const mongoose = require("mongoose");
 
-require("dotenv");
-const mongoUrl = process.env.MONGODB_URL;
-
 const userSchema = mongoose.Schema({
   username: {
     type: String,
