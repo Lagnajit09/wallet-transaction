@@ -3,6 +3,7 @@ const { z, ZodError } = require("zod");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { User } = require("../db/db");
+const { authMiddleware } = require("../middleware/auth");
 const router = express.Router();
 require("dotenv").config();
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -20,6 +21,12 @@ const signupSchema = z.object({
   //         "Password must contain at least one uppercase letter, one lowercase letter, one special character, and one number",
   //     }
   //   ),
+});
+
+const updateBody = z.object({
+  firstName: z.string().max(30).optional(),
+  lastName: z.string().max(30).optional(),
+  password: z.string().min(8).optional(),
 });
 
 router.post("/signup", async (req, res) => {
@@ -51,6 +58,7 @@ router.post("/signup", async (req, res) => {
     const token = jwt.sign(
       {
         userId,
+        username,
       },
       JWT_SECRET
     );
@@ -61,7 +69,7 @@ router.post("/signup", async (req, res) => {
     });
   } catch (error) {
     if (error instanceof ZodError) {
-      res.status(400).json({
+      res.status(411).json({
         success: false,
         message: "Invalid input!",
       });
@@ -72,6 +80,69 @@ router.post("/signup", async (req, res) => {
       });
     }
   }
+});
+
+router.post("/signin", async (req, res) => {
+  const { username, password } = req.body;
+
+  const user = await User.findOne({ username });
+
+  const isPasswordValid = await bcrypt.compare(password, user.password);
+
+  if (!isPasswordValid) {
+    return res.status(401).json({ message: "Invalid password" });
+  }
+
+  if (!user) {
+    return res.status(411).json({
+      message: "User doesn't exist! Please Signup.",
+    });
+  }
+
+  try {
+    const userId = user._id;
+    const token = jwt.sign({ userId, username }, JWT_SECRET);
+
+    return res.json({
+      token,
+    });
+  } catch (error) {
+    return res.status(411).json({
+      message: "Error while logging in!",
+    });
+  }
+});
+
+router.put("/", authMiddleware, async (req, res) => {
+  const { success } = updateBody.safeParse(req.body);
+  if (!success) {
+    return res.status(411).json({
+      message: "Error while updating information.",
+    });
+  }
+
+  const { password, firstName, lastName } = req.body;
+  const username = req.user.username;
+
+  const user = await User.findOne({ username });
+  // console.log(user);
+
+  const hashedPassword = password ? await bcrypt.hash(password, 10) : password;
+
+  await User.updateOne(
+    { username },
+    {
+      $set: {
+        username: user.username,
+        password: hashedPassword || user.password,
+        firstName: firstName || user.firstName,
+        lastName: lastName || user.lastName,
+      },
+    }
+  );
+  res.json({
+    message: "Updated successfully!",
+  });
 });
 
 module.exports = router;
