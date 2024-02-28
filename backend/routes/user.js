@@ -2,7 +2,7 @@ const express = require("express");
 const { z, ZodError } = require("zod");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const { User } = require("../db/db");
+const { User, Accounts } = require("../db/db");
 const { authMiddleware } = require("../middleware/auth");
 const router = express.Router();
 require("dotenv").config();
@@ -63,9 +63,18 @@ router.post("/signup", async (req, res) => {
       JWT_SECRET
     );
 
+    //11
+    const balance = Math.floor(Math.random() * 10001);
+    const newUserBalance = await new Accounts({
+      userId,
+      balance,
+    });
+    await newUserBalance.save();
+
     res.status(200).json({
       newUser,
       token,
+      balance,
     });
   } catch (error) {
     if (error instanceof ZodError) {
@@ -142,6 +151,25 @@ router.put("/", authMiddleware, async (req, res) => {
   );
   res.json({
     message: "Updated successfully!",
+  });
+});
+
+router.get("/bulk", authMiddleware, async (req, res) => {
+  const filter = req.query.filter || "";
+
+  const users = await User.find({
+    $or: [
+      { firstName: { $regex: filter, $options: "i" } },
+      { lastName: { $regex: filter, $options: "i" } },
+    ],
+  });
+  res.json({
+    users: users.map((user) => ({
+      username: user.username,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      _id: user._id,
+    })),
   });
 });
 

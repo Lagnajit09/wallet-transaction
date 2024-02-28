@@ -15,8 +15,15 @@ const userSchema = mongoose.Schema({
   password: { type: String, required: true, minLength: 6 },
 });
 
+const AccountsSchema = mongoose.Schema({
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+  balance: { type: Number, required: true },
+});
+
 const User = mongoose.model("User", userSchema);
+const Accounts = mongoose.model("Accounts", AccountsSchema);
 
 module.exports = {
   User,
+  Accounts,
 };
