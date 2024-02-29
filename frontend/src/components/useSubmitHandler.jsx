@@ -1,8 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useSetRecoilState, useRecoilValue } from "recoil";
+import { userAtom } from "../store/user";
 
 const useSubmitHandler = (route) => {
   const navigate = useNavigate();
+  const setUser = useSetRecoilState(userAtom);
 
   async function submitHandler(body) {
     try {
@@ -23,6 +26,7 @@ const useSubmitHandler = (route) => {
 
       if (json.success) {
         // Redirect to dashboard if signup is successful
+        setUser(json);
         navigate("/dashboard");
       } else {
         console.error("Error:", json.message);

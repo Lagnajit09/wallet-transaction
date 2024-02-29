@@ -45,16 +45,16 @@ router.post("/signup", async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(userData.password, 10);
 
-    const newUser = await new User({
+    const joinedUser = await new User({
       username: userData.username,
       firstName: userData.firstName,
       lastName: userData.lastName,
       password: hashedPassword,
     });
 
-    await newUser.save();
+    await joinedUser.save();
 
-    const userId = newUser._id;
+    const userId = joinedUser._id;
 
     const token = jwt.sign(
       {
@@ -74,7 +74,7 @@ router.post("/signup", async (req, res) => {
 
     res.status(200).json({
       success: true,
-      newUser,
+      joinedUser,
       token,
       balance,
     });
@@ -96,9 +96,9 @@ router.post("/signup", async (req, res) => {
 router.post("/signin", async (req, res) => {
   const { username, password } = req.body;
 
-  const user = await User.findOne({ username });
+  const joinedUser = await User.findOne({ username });
 
-  const isPasswordValid = await bcrypt.compare(password, user.password);
+  const isPasswordValid = await bcrypt.compare(password, joinedUser.password);
 
   if (!isPasswordValid) {
     return res
@@ -106,7 +106,7 @@ router.post("/signin", async (req, res) => {
       .json({ success: false, message: "Invalid password" });
   }
 
-  if (!user) {
+  if (!joinedUser) {
     return res.status(411).json({
       success: false,
       message: "User doesn't exist! Please Signup.",
@@ -114,11 +114,12 @@ router.post("/signin", async (req, res) => {
   }
 
   try {
-    const userId = user._id;
+    const userId = joinedUser._id;
     const token = jwt.sign({ userId, username }, JWT_SECRET);
 
     return res.json({
       success: true,
+      joinedUser,
       token,
     });
   } catch (error) {
