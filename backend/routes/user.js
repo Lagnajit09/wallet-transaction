@@ -35,7 +35,8 @@ router.post("/signup", async (req, res) => {
   const user = await User.findOne({ username });
 
   if (user) {
-    res.status(405).json({
+    return res.status(405).json({
+      success: false,
       message: "User already exists!",
     });
   }
@@ -72,6 +73,7 @@ router.post("/signup", async (req, res) => {
     await newUserBalance.save();
 
     res.status(200).json({
+      success: true,
       newUser,
       token,
       balance,
