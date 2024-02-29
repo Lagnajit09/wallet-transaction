@@ -2,7 +2,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    width: 60%;
+    margin-top: 20px;
 }
 
 .user-form input{
@@ -26,7 +27,9 @@
     font-weight: 600;
     cursor: pointer;
 }
-
+.user-form p{
+    margin: 20px 0;
+}
 .user-form span{
     border-bottom: 1px solid rgb(70, 70, 70);
     font-weight: 700;

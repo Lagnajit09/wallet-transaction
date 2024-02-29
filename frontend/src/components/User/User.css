@@ -1,0 +1,25 @@
+.user-list{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+.user-list .left{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.user-list .send-money{
+    background-color: rgb(70, 70, 70);
+    color: white;
+    font-weight: 500;
+    border-radius: 5px;
+    outline: none;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.send-money:hover{
+    background-color: rgb(95, 95, 95);
+}

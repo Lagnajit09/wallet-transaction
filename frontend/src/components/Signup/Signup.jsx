@@ -1,8 +1,6 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import "../userForm.css";
-import Dashboard from "../Dashboard/Dashboard";
 import Card from "../Card/Card";
 import useSubmitHandler from "../useSubmitHandler";
 

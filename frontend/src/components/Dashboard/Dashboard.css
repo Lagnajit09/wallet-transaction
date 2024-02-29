@@ -1,0 +1,38 @@
+.dashboard{
+    background-color: rgb(240, 240, 240);
+    padding: 30px;
+    height: 100vh;
+}
+
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgb(70, 70, 70);
+    padding-bottom: 10px;
+}
+.navbar .left-nav {
+    font-weight: 700;
+    font-size: 20px;
+}
+.navbar .right-nav {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.user h1{
+    margin-top: 20px;
+}
+
+.user .balance{
+    font-size: 18px;
+    margin: 20px 0;
+}
+
+.user .search{
+    width: 100%;
+    padding: 10px;
+    margin: 20px 0;
+    outline: none;
+}
