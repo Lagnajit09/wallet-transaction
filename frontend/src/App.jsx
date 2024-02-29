@@ -15,7 +15,7 @@ function App() {
           <Route path="/signup" exact element={<Signup />} />
           <Route path="/signin" exact element={<Signin />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/send" element={<Send />} />
+          <Route path="/send" ele={<Send />} />
         </Routes>
       </Router>
     </div>

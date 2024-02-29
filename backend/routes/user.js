@@ -101,11 +101,14 @@ router.post("/signin", async (req, res) => {
   const isPasswordValid = await bcrypt.compare(password, user.password);
 
   if (!isPasswordValid) {
-    return res.status(401).json({ message: "Invalid password" });
+    return res
+      .status(401)
+      .json({ success: false, message: "Invalid password" });
   }
 
   if (!user) {
     return res.status(411).json({
+      success: false,
       message: "User doesn't exist! Please Signup.",
     });
   }
@@ -115,10 +118,12 @@ router.post("/signin", async (req, res) => {
     const token = jwt.sign({ userId, username }, JWT_SECRET);
 
     return res.json({
+      success: true,
       token,
     });
   } catch (error) {
     return res.status(411).json({
+      success: false,
       message: "Error while logging in!",
     });
   }

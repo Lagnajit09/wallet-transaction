@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import "./Signup.css";
+import "../userForm.css";
 import Dashboard from "../Dashboard/Dashboard";
+import Card from "../Card/Card";
+import useSubmitHandler from "../useSubmitHandler";
 
 function Signup() {
   const [firstName, setFirstName] = useState("");
@@ -10,6 +12,7 @@ function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const { submitHandler } = useSubmitHandler("signup");
 
   //   async function signupSubmitHandler(event) {
   //     event.preventDefault();
@@ -30,42 +33,10 @@ function Signup() {
   //       });
   //   }
 
-  const signupSubmitHandler = async (event) => {
-    event.preventDefault();
-
-    try {
-      const response = await fetch("http://localhost:3000/api/v1/user/signup", {
-        method: "POST",
-        body: JSON.stringify({
-          firstName,
-          lastName,
-          username: email,
-          password,
-        }),
-        headers: { "Content-Type": "application/json" },
-      });
-
-      if (!response.ok) {
-        throw new Error("Request failed");
-      }
-
-      const json = await response.json();
-
-      if (json.success) {
-        // Redirect to dashboard if signup is successful
-        navigate("/dashboard");
-      } else {
-        console.error("Error:", json.message);
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  };
-
   return (
-    <div className="signup">
+    <Card>
       <h1>SIGN UP</h1>
-      <form className="signup-form">
+      <form className="user-form">
         <input
           type="text"
           placeholder="Firstname"
@@ -120,7 +91,15 @@ function Signup() {
         <button
           className="signup-btn"
           type="submit"
-          onClick={signupSubmitHandler}
+          onClick={(e) => {
+            e.preventDefault();
+            submitHandler({
+              firstName,
+              lastName,
+              username: email,
+              password,
+            });
+          }}
         >
           SIGN UP
         </button>
@@ -136,7 +115,7 @@ function Signup() {
           </span>
         </p>
       </form>
-    </div>
+    </Card>
   );
 }
 

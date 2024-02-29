@@ -1,23 +1,11 @@
-.signup {
-    background-color: rgb(240, 240, 240);
-    width: 30%;
-    margin: 80px auto;
-    display: flex;
-    flex-direction: column;
-    padding: 15px;
-    align-items: center;
-    justify-content: center;
-    border-radius: 5px;
-}
-
-.signup-form {
+.user-form {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 }
 
-.signup-form input{
+.user-form input{
     background-color: rgb(240, 240, 240);
     width: 100%;
     padding: 15px 15px 8px;
@@ -28,7 +16,7 @@
     margin-bottom: 30px;
 }
 
-.signup-form button{
+.user-form button{
     background-color: rgb(70, 70, 70);
     color: white;
     border: 1px solid rgb(70, 70, 70);
@@ -39,7 +27,7 @@
     cursor: pointer;
 }
 
-.signup-form span{
+.user-form span{
     border-bottom: 1px solid rgb(70, 70, 70);
     font-weight: 700;
     cursor: pointer;
