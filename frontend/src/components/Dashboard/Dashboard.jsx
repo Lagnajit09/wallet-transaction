@@ -108,9 +108,15 @@ function Dashboard() {
             setFilter(e.target.value);
           }}
         />
-        {users.map((user) => (
-          <User key={user._id} navigate={navigate} username={user.username} />
-        ))}
+        {users.map((otheruser) =>
+          otheruser.username !== user.joinedUser.username ? (
+            <User
+              key={otheruser._id}
+              navigate={navigate}
+              username={otheruser.username}
+            />
+          ) : null
+        )}
       </div>
     </div>
   );

@@ -16,7 +16,7 @@ function App() {
             <Route path="/signup" exact element={<Signup />} />
             <Route path="/signin" exact element={<Signin />} />
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/send" ele={<Send />} />
+            <Route path="/send/:receiver" element={<Send />} />
           </Routes>
         </Router>
       </div>
